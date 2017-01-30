@@ -20,6 +20,6 @@ echo "Encrypting secret:" $filename
 gpg --yes --output $DIR/../secrets/$filename.gpg --encrypt --recipient $recipient /tmp/$filename
 
 echo "Push secret up to github"
-git --git-dir=$DIR/../.git add secrets/$filename.gpg
+git --git-dir=$DIR/../.git --work-tree=$DIR/../secrets add $filename.gpg
 git --git-dir=$DIR/../.git commit -m "Script commit of secret $filename"
 git --git-dir=$DIR/../.git push
