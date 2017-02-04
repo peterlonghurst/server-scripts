@@ -2,9 +2,11 @@
 
 recipient=pete.longhurst@gmail.com
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+ROOTDIR=`readlink -f "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/..`
 
-$DIR/hasExternalIPChanged.sh
+echo $ROOTDIR
+
+$ROOTDIR/scripts/hasExternalIPChanged.sh
 
 if [ $? -eq 0 ]
 then
@@ -17,9 +19,9 @@ filename=`hostname`ExternalIP
 
 echo "Encrypting secret:" $filename
 `echo $currentIP > /tmp/$filename`
-gpg --yes --output $DIR/../secrets/$filename.gpg --encrypt --recipient $recipient /tmp/$filename
+gpg --yes --output $ROOTDIR/secrets/$filename.gpg --encrypt --recipient $recipient /tmp/$filename
 
 echo "Push secret up to github"
-git --git-dir=$DIR/../.git --work-tree=$DIR/../secrets add $filename.gpg
-git --git-dir=$DIR/../.git commit -m "Script commit of secret $filename"
-git --git-dir=$DIR/../.git push
+git --git-dir=$ROOTDIR/.git --work-tree=$ROOTDIR add secrets/$filename.gpg
+git --git-dir=$ROOTDIR/.git commit -m "Script commit of secret $filename"
+git --git-dir=$ROOTDIR/.git push
