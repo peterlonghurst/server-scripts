@@ -1,10 +1,21 @@
 #!/bin/bash
 
-recipient=pete.longhurst@gmail.com
+# Checks to see if the external IP address has changed, and if so writes the new address
+# to a file which is then pulic key encrypted (using Gnu Privacy Guard) and uploaded
+# to a git repository. This secret is written to a directory called "secrets" which is
+# a sibbling to the directory where this script lives.
+# 
+# Script takes one argument; the email address of the GPG recipient. This script requires
+# the public key for this recipient to be installed and trusted on the system.
+#
+# Usage: hasExternalIPChanged.sh gpg.recipient@address
+#
+
+
+recipient=$1
 
 ROOTDIR=`readlink -f "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/..`
 
-echo $ROOTDIR
 
 $ROOTDIR/scripts/hasExternalIPChanged.sh
 
